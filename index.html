@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fardin Vegetables - Fresh Vegetables Online</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-leaf"></i>
+                <span>Fardin Vegetables</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#products" class="nav-link">Products</a></li>
+                <li><a href="#reviews" class="nav-link">Reviews</a></li>
+                <li><a href="#support" class="nav-link">Support</a></li>
+                <li><a href="#track-order" class="nav-link">Track Order</a></li>
+            </ul>
+            <div class="nav-icons">
+                <a href="dashboard.html" class="admin-link" title="Seller/Admin Login">
+                    <i class="fas fa-user-shield"></i>
+                </a>
+                <div class="cart-icon" id="cartIcon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                </div>
+                <div class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Fresh Vegetables Delivered to Your Doorstep</h1>
+            <p>Quality produce from Fardin Vegetables - Your trusted local vegetable store</p>
+            <a href="#products" class="btn-primary">Shop Now</a>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="products-section">
+        <div class="container">
+            <h2 class="section-title">Our Fresh Vegetables</h2>
+            
+            <!-- Filters and Sort -->
+            <div class="filter-sort-bar">
+                <div class="filters">
+                    <select id="categoryFilter" class="filter-select">
+                        <option value="all">All Categories</option>
+                        <option value="leafy">Leafy Greens</option>
+                        <option value="root">Root Vegetables</option>
+                        <option value="fruit-veg">Fruit Vegetables</option>
+                        <option value="herbs">Herbs & Spices</option>
+                    </select>
+                    <input type="text" id="searchInput" class="search-input" placeholder="Search vegetables...">
+                </div>
+                <div class="sort">
+                    <select id="sortSelect" class="sort-select">
+                        <option value="default">Sort by: Default</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="name-asc">Name: A to Z</option>
+                        <option value="name-desc">Name: Z to A</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="products-grid" id="productsGrid">
+                <!-- Products will be dynamically loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Shopping Cart Sidebar -->
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>Shopping Cart</h3>
+            <button class="close-cart" id="closeCart">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <p class="empty-cart">Your cart is empty</p>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <strong>Total: ₹<span id="cartTotal">0</span></strong>
+            </div>
+            <button class="btn-checkout" id="checkoutBtn">Checkout</button>
+        </div>
+    </div>
+    <div class="cart-overlay" id="cartOverlay"></div>
+
+    <!-- Reviews Section -->
+    <section id="reviews" class="reviews-section">
+        <div class="container">
+            <h2 class="section-title">Customer Reviews</h2>
+            <div class="reviews-container">
+                <div class="reviews-list" id="reviewsList">
+                    <!-- Reviews will be loaded here -->
+                </div>
+                <div class="add-review-form">
+                    <h3>Write a Review</h3>
+                    <form id="reviewForm">
+                        <input type="text" id="reviewerName" placeholder="Your Name" required>
+                        <div class="rating-input">
+                            <label>Rating:</label>
+                            <div class="stars" id="ratingStars">
+                                <i class="far fa-star" data-rating="1"></i>
+                                <i class="far fa-star" data-rating="2"></i>
+                                <i class="far fa-star" data-rating="3"></i>
+                                <i class="far fa-star" data-rating="4"></i>
+                                <i class="far fa-star" data-rating="5"></i>
+                            </div>
+                            <span id="ratingValue">0</span>
+                        </div>
+                        <textarea id="reviewText" placeholder="Write your review..." required></textarea>
+                        <button type="submit" class="btn-primary">Submit Review</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Customer Support Section -->
+    <section id="support" class="support-section">
+        <div class="container">
+            <h2 class="section-title">Customer Support</h2>
+            <div class="support-content">
+                <div class="support-info">
+                    <div class="support-card">
+                        <i class="fas fa-phone"></i>
+                        <h3>Call Us</h3>
+                        <p>+91 98765 43210</p>
+                        <p>Mon-Sat: 8:00 AM - 8:00 PM</p>
+                    </div>
+                    <div class="support-card">
+                        <i class="fas fa-envelope"></i>
+                        <h3>Email Us</h3>
+                        <p>support@fardinvegetables.com</p>
+                        <p>We respond within 24 hours</p>
+                    </div>
+                    <div class="support-card">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <h3>Visit Us</h3>
+                        <p>123 Vegetable Market Street</p>
+                        <p>Your City, State - 123456</p>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <h3>Send us a Message</h3>
+                    <form id="contactForm">
+                        <input type="text" id="contactName" placeholder="Your Name" required>
+                        <input type="email" id="contactEmail" placeholder="Your Email" required>
+                        <input type="tel" id="contactPhone" placeholder="Your Phone" required>
+                        <textarea id="contactMessage" placeholder="Your Message" required></textarea>
+                        <button type="submit" class="btn-primary">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Order Tracking Section -->
+    <section id="track-order" class="track-order-section">
+        <div class="container">
+            <h2 class="section-title">Track Your Order</h2>
+            <div class="track-order-content">
+                <div class="track-input-section">
+                    <input type="text" id="orderIdInput" placeholder="Enter Order ID" class="order-input">
+                    <button class="btn-primary" id="trackOrderBtn">Track Order</button>
+                </div>
+                <div class="order-status" id="orderStatus">
+                    <p class="track-placeholder">Enter your order ID to track your order</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Fardin Vegetables</h3>
+                    <p>Your trusted local vegetable store providing fresh, quality produce since 2010.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#products">Products</a></li>
+                        <li><a href="#reviews">Reviews</a></li>
+                        <li><a href="#support">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p><i class="fas fa-phone"></i> +91 98765 43210</p>
+                    <p><i class="fas fa-envelope"></i> support@fardinvegetables.com</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Fardin Vegetables. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Checkout Modal -->
+    <div class="modal" id="checkoutModal">
+        <div class="modal-content modal-mobile-friendly">
+            <span class="close-modal" id="closeModal">&times;</span>
+            <h2><i class="fas fa-shopping-cart"></i> Checkout</h2>
+            <div class="checkout-summary" id="checkoutSummary">
+                <!-- Order summary will be shown here -->
+            </div>
+            <form id="checkoutForm">
+                <div class="form-group">
+                    <label><i class="fas fa-user"></i> Full Name</label>
+                    <input type="text" id="checkoutName" placeholder="Enter your full name" required autocomplete="name">
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-phone"></i> Phone Number</label>
+                    <input type="tel" id="checkoutPhone" placeholder="Enter your phone number" required autocomplete="tel" pattern="[0-9]{10}">
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-map-marker-alt"></i> Delivery Address</label>
+                    <textarea id="checkoutAddress" placeholder="Enter your complete delivery address" required rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-credit-card"></i> Payment Method</label>
+                    <select id="paymentMethod" required>
+                        <option value="">Select payment method</option>
+                        <option value="cash">💵 Cash on Delivery</option>
+                        <option value="card">💳 Credit/Debit Card</option>
+                        <option value="upi">📱 UPI</option>
+                    </select>
+                </div>
+                <div class="checkout-total">
+                    <strong>Total Amount: ₹<span id="checkoutTotalAmount">0</span></strong>
+                </div>
+                <button type="submit" class="btn-primary btn-checkout-submit">
+                    <i class="fas fa-check"></i> Place Order
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
