@@ -1,7 +1,7 @@
 // Admin Credentials (In production, this should be server-side)
 const ADMIN_CREDENTIALS = {
-    username: 'admin',
-    password: 'admin123'
+    username: 'sufedaveg',
+    password: 'sufeda@786'
 };
 
 // State
@@ -43,7 +43,7 @@ function loadProducts() {
 
 function initializeDefaultProducts() {
     products = [
-        { id: 1, name: "Fresh Tomatoes", description: "Ripe, red tomatoes perfect for salads and cooking", price: 40, category: "fruit-veg", image: "🍅", imageUrl: null },
+        { id: 1, name: "Fresh Tomatoes", description: "Ripe, red tomatoes perfect for salads and cooking", price: 40, category: "fruit-veg", image: "🍅", imageUrl:"https://img.freepik.com/premium-photo/fresh-tomato_181303-6010.jpg" },
         { id: 2, name: "Organic Spinach", description: "Fresh, leafy green spinach rich in iron", price: 30, category: "leafy", image: "🥬", imageUrl: null },
         { id: 3, name: "Carrots", description: "Sweet and crunchy carrots, great for snacking", price: 35, category: "root", image: "🥕", imageUrl: null },
         { id: 4, name: "Bell Peppers", description: "Colorful bell peppers - red, green, and yellow", price: 60, category: "fruit-veg", image: "🫑", imageUrl: null },
