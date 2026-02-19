@@ -46,6 +46,22 @@ window.updateCustomerProducts = function(newProducts) {
     loadProducts();
 };
 
+// Listen for product updates from admin (in real-time from localStorage changes)
+window.addEventListener('storage', (event) => {
+    if (event.key === 'products') {
+        try {
+            const updatedProducts = JSON.parse(event.newValue);
+            if (updatedProducts && updatedProducts.length > 0) {
+                products = updatedProducts;
+                loadProducts();
+                console.log('Products updated from admin! Refreshed display.');
+            }
+        } catch (e) {
+            console.error('Error updating products from storage event:', e);
+        }
+    }
+});
+
 // Initialize App
 document.addEventListener('DOMContentLoaded', () => {
     // Load products from storage (may be updated by admin) or use default
@@ -237,7 +253,11 @@ function renderCart() {
     let total = 0;
 
     cart.forEach(item => {
-        const itemTotal = item.price * item.quantity;
+        // Get the latest price from the products array (in case admin updated it)
+        const currentProduct = products.find(p => p.id === item.id);
+        const currentPrice = currentProduct ? currentProduct.price : item.price;
+        
+        const itemTotal = currentPrice * item.quantity;
         total += itemTotal;
 
         const cartItem = document.createElement('div');
@@ -246,7 +266,7 @@ function renderCart() {
             <div class="cart-item-image">${item.image}</div>
             <div class="cart-item-info">
                 <div class="cart-item-name">${item.name}</div>
-                <div class="cart-item-price">₹${item.price}/kg</div>
+                <div class="cart-item-price">₹${currentPrice}/kg</div>
                 <div class="cart-item-controls">
                     <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
                     <span class="cart-item-quantity">${item.quantity} kg</span>
@@ -376,17 +396,29 @@ function filterAndSortProducts() {
 // Checkout Summary
 function updateCheckoutSummary() {
     const summary = document.getElementById('checkoutSummary');
-    const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    let total = 0;
+    
+    // Calculate total using latest product prices
+    const summaryItems = cart.map(item => {
+        const currentProduct = products.find(p => p.id === item.id);
+        const currentPrice = currentProduct ? currentProduct.price : item.price;
+        total += currentPrice * item.quantity;
+        return {
+            ...item,
+            currentPrice
+        };
+    });
+    
     document.getElementById('checkoutTotalAmount').textContent = total.toFixed(2);
     
     if (summary) {
         summary.innerHTML = `
             <div class="checkout-items-list">
                 <h4>Order Summary (${cart.length} item${cart.length > 1 ? 's' : ''})</h4>
-                ${cart.map(item => `
+                ${summaryItems.map(item => `
                     <div class="checkout-item">
                         <span>${item.image || '🥬'} ${item.name}</span>
-                        <span>${item.quantity} kg × ₹${item.price} = ₹${(item.quantity * item.price).toFixed(2)}</span>
+                        <span>${item.quantity} kg × ₹${item.currentPrice} = ₹${(item.quantity * item.currentPrice).toFixed(2)}</span>
                     </div>
                 `).join('')}
                 <div class="checkout-item-total">
@@ -418,7 +450,18 @@ function handleCheckout(e) {
     }
 
     const orderId = 'ORD' + Date.now();
-    const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    
+    // Calculate total using latest product prices
+    let total = 0;
+    const orderItems = cart.map(item => {
+        const currentProduct = products.find(p => p.id === item.id);
+        const currentPrice = currentProduct ? currentProduct.price : item.price;
+        total += currentPrice * item.quantity;
+        return {
+            ...item,
+            price: currentPrice // Update to latest price
+        };
+    });
 
     const order = {
         id: orderId,
@@ -426,7 +469,7 @@ function handleCheckout(e) {
         phone,
         address,
         paymentMethod,
-        items: [...cart],
+        items: orderItems,
         total,
         status: 'pending',
         date: new Date().toISOString(),
