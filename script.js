@@ -69,6 +69,12 @@ document.addEventListener('DOMContentLoaded', () => {
     updateCartCount();
     loadReviews();
     initializeEventListeners();
+    
+    // Show sync notice for customers
+    const syncNotice = document.getElementById('syncNotice');
+    if (syncNotice && !window.location.pathname.includes('dashboard')) {
+        syncNotice.style.display = 'flex';
+    }
 });
 
 // Navigation
@@ -736,13 +742,3 @@ function copySyncCodeFromCustomer() {
         console.error(err);
     });
 }
-
-// Show sync notice on page load
-document.addEventListener('DOMContentLoaded', () => {
-    // Show sync notice if user is not on admin page
-    if (!window.location.pathname.includes('dashboard')) {
-        setTimeout(() => {
-            document.getElementById('syncNotice').style.display = 'flex';
-        }, 2000);
-    }
-}, { once: true });
