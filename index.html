@@ -51,6 +51,20 @@
         <div class="container">
             <h2 class="section-title">Our Fresh Vegetables</h2>
             
+            <!-- Sync Notice -->
+            <div id="syncNotice" style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 12px; margin-bottom: 15px; border-radius: 4px; display: none; align-items: center; gap: 10px;">
+                <span><strong>💡 Tip:</strong> If prices look outdated, ask seller for sync code or click "Check for Updates"</span>
+                <button class="btn-small" onclick="checkForProductUpdates()" style="margin-left: auto; white-space: nowrap;">
+                    <i class="fas fa-sync-alt"></i> Check Updates
+                </button>
+                <button class="btn-small" onclick="openSyncCodeModal()" style="white-space: nowrap;">
+                    <i class="fas fa-paste"></i> Paste Sync Code
+                </button>
+                <button class="btn-small" onclick="copySyncCodeFromCustomer()" style="white-space: nowrap;" title="Share current prices with others">
+                    <i class="fas fa-copy"></i> Share Prices
+                </button>
+            </div>
+            
             <!-- Filters and Sort -->
             <div class="filter-sort-bar">
                 <div class="filters">
@@ -261,6 +275,26 @@
                     <i class="fas fa-check"></i> Place Order
                 </button>
             </form>
+        </div>
+    </div>
+
+    <!-- Sync Code Modal -->
+    <div class="modal" id="syncCodeModal">
+        <div class="modal-content modal-mobile-friendly">
+            <span class="close-modal" onclick="document.getElementById('syncCodeModal').classList.remove('active')">&times;</span>
+            <h2><i class="fas fa-sync-alt"></i> Sync Latest Products</h2>
+            <p style="color: #666; margin-bottom: 15px;">
+                Paste the sync code from the seller/admin to get the latest prices and photos.
+            </p>
+            <textarea id="syncCodeInput" placeholder="Paste sync code here..." style="width: 100%; height: 120px; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-family: monospace; font-size: 12px; resize: vertical;"></textarea>
+            <div style="display: flex; gap: 10px; margin-top: 15px;">
+                <button class="btn-primary" onclick="applySyncCode()" style="flex: 1;">
+                    <i class="fas fa-check"></i> Apply Sync Code
+                </button>
+                <button class="btn-secondary" onclick="document.getElementById('syncCodeModal').classList.remove('active')" style="flex: 1;">
+                    Close
+                </button>
+            </div>
         </div>
     </div>
 
