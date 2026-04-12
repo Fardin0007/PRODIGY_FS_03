@@ -22,9 +22,9 @@ function loadProductsFromStorage() {
     }
     // Return default products if nothing in storage
     return [
-        { id: 1, name: "Fresh Tomatoes", description: "Ripe, red tomatoes perfect for salads and cooking", price: 40, category: "fruit-veg", image: "🍅", imageUrl: null },
-        { id: 2, name: "Organic Spinach", description: "Fresh, leafy green spinach rich in iron", price: 30, category: "leafy", image: "🥬", imageUrl: null },
-        { id: 3, name: "Carrots", description: "Sweet and crunchy carrots, great for snacking", price: 35, category: "root", image: "🥕", imageUrl: null },
+        { id: 1, name: "Fresh Tomatoes", description: "Ripe, red tomatoes perfect for salads and cooking", price: 10, category: "fruit-veg", image: "🍅", imageUrl: null },
+        { id: 2, name: "Organic Spinach", description: "Fresh, leafy green spinach rich in iron", price: 10, category: "leafy", image: "🥬", imageUrl: null },
+        { id: 3, name: "Carrots", description: "Sweet and crunchy carrots, great for snacking", price: 10, category: "root", image: "🥕", imageUrl: null },
         { id: 4, name: "Bell Peppers", description: "Colorful bell peppers - red, green, and yellow", price: 60, category: "fruit-veg", image: "🫑", imageUrl: null },
         { id: 5, name: "Broccoli", description: "Fresh broccoli florets, packed with nutrients", price: 50, category: "leafy", image: "🥦", imageUrl: null },
         { id: 6, name: "Potatoes", description: "Fresh potatoes, perfect for all cooking needs", price: 25, category: "root", image: "🥔", imageUrl: null },
