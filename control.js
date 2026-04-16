@@ -3,13 +3,9 @@ import { getDatabase, ref, set, update, remove, get } from "https://www.gstatic.
 
 const firebaseConfig = {
   apiKey: "AIzaSyBtb3DLnCKrvNyZ9L7T5UJ2OxknebLUJ_8",
-  authDomain: "eco-veg-ee446.firebaseapp.com",
-  databaseURL: "https://eco-veg-ee446-default-rtdb.firebaseio.com",
-  projectId: "eco-veg-ee446",
-  storageBucket: "eco-veg-ee446.appspot.com",
-  messagingSenderId: "35768832339",
-  appId: "1:35768832339:web:150fa825f7bf2c32f551a6",
-  measurementId: "G-22L2Q5362L"
+  authDomain: "fresh-d0524.firebaseapp.com",
+  databaseURL: "https://fresh-d0524-default-rtdb.firebaseio.com",
+  projectId: "fresh-d0524"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -54,13 +50,16 @@ function showDashboard() {
 }
 
 function login(username, password) {
+    console.log('Checking credentials:', username, 'vs', ADMIN_CREDENTIALS.username);
     if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+        console.log('Credentials match, setting auth');
         localStorage.setItem('adminAuth', 'true');
         isAuthenticated = true;
         showDashboard();
         initializeAdminDashboard();
         return true;
     }
+    console.log('Credentials do not match');
     return false;
 }
 
@@ -72,18 +71,27 @@ function logout() {
 }
 
 function initializeEventListeners() {
+    console.log('Initializing event listeners...');
+
     const loginForm = document.getElementById('loginForm');
     const logoutBtn = document.getElementById('logoutBtn');
+
+    console.log('Login form found:', !!loginForm);
+    console.log('Logout button found:', !!logoutBtn);
 
     if (loginForm) {
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
+            console.log('Login form submitted');
             const username = document.getElementById('adminUsername').value;
             const password = document.getElementById('adminPassword').value;
+            console.log('Login attempt:', username, password ? '***' : 'no password');
 
             if (login(username, password)) {
+                console.log('Login successful');
                 showNotification('Login successful!', 'success');
             } else {
+                console.log('Login failed');
                 showNotification('Invalid credentials!', 'error');
             }
         });
@@ -91,6 +99,7 @@ function initializeEventListeners() {
 
     if (logoutBtn) {
         logoutBtn.addEventListener('click', () => {
+            console.log('Logout clicked');
             if (confirm('Are you sure you want to logout?')) {
                 logout();
             }
@@ -99,12 +108,17 @@ function initializeEventListeners() {
 }
 
 function initializeAdminDashboard() {
+    console.log('Initializing admin dashboard...');
     loadAdminProducts();
     loadAdminOrders();
     setupDashboardListeners();
+    // Activate products tab by default
+    activateTab('products');
 }
 
 function setupDashboardListeners() {
+    console.log('Setting up dashboard listeners...');
+
     const addProductBtn = document.getElementById('addProductBtn');
     const refreshBtn = document.getElementById('refreshBtn');
     const productEditForm = document.getElementById('productEditForm');
@@ -114,24 +128,48 @@ function setupDashboardListeners() {
     const removeImageBtn = document.getElementById('removeImageBtn');
     const tabButtons = document.querySelectorAll('.tab-btn');
 
+    console.log('Found elements:', {
+        addProductBtn: !!addProductBtn,
+        refreshBtn: !!refreshBtn,
+        productEditForm: !!productEditForm,
+        cancelProductBtn: !!cancelProductBtn,
+        closeProductModalBtn: !!closeProductModalBtn,
+        tabButtons: tabButtons.length
+    });
+
     if (addProductBtn) {
-        addProductBtn.addEventListener('click', openAddProductModal);
+        addProductBtn.addEventListener('click', () => {
+            console.log('Add product button clicked');
+            openAddProductModal();
+        });
     }
 
     if (refreshBtn) {
-        refreshBtn.addEventListener('click', loadAdminProducts);
+        refreshBtn.addEventListener('click', () => {
+            console.log('Refresh button clicked');
+            loadAdminProducts();
+        });
     }
 
     if (productEditForm) {
-        productEditForm.addEventListener('submit', handleProductFormSubmit);
+        productEditForm.addEventListener('submit', (e) => {
+            console.log('Product form submitted');
+            handleProductFormSubmit(e);
+        });
     }
 
     if (cancelProductBtn) {
-        cancelProductBtn.addEventListener('click', closeProductModal);
+        cancelProductBtn.addEventListener('click', () => {
+            console.log('Cancel button clicked');
+            closeProductModal();
+        });
     }
 
     if (closeProductModalBtn) {
-        closeProductModalBtn.addEventListener('click', closeProductModal);
+        closeProductModalBtn.addEventListener('click', () => {
+            console.log('Close modal button clicked');
+            closeProductModal();
+        });
     }
 
     if (productImageInput) {
@@ -146,6 +184,7 @@ function setupDashboardListeners() {
         tabButtons.forEach(button => {
             button.addEventListener('click', () => {
                 const targetTab = button.dataset.tab;
+                console.log('Tab clicked:', targetTab);
                 activateTab(targetTab);
             });
         });
@@ -168,15 +207,48 @@ function activateTab(tabName) {
 }
 
 function loadAdminProducts() {
+    console.log('Loading admin products from Firebase...');
     get(productsRef)
         .then((snapshot) => {
             const data = snapshot.val();
+            console.log('Firebase data received:', data);
             products = convertProductsSnapshot(data);
+
+            // If no products in Firebase, add some defaults
+            if (!products || products.length === 0) {
+                console.log('No products in Firebase, adding defaults');
+                products = [
+                    { id: 1, name: "Fresh Tomatoes", description: "Ripe, red tomatoes perfect for salads and cooking", price: 20, category: "fruit-veg", image: "🍅", imageUrl: null },
+                    { id: 2, name: "Organic Spinach", description: "Fresh, leafy green spinach rich in iron", price: 30, category: "leafy", image: "🥬", imageUrl: null },
+                    { id: 3, name: "Carrots", description: "Sweet and crunchy carrots, great for snacking", price: 40, category: "root", image: "🥕", imageUrl: null }
+                ];
+                // Save defaults to Firebase
+                const defaultsRef = ref(db, 'products');
+                set(defaultsRef, {
+                    1: products[0],
+                    2: products[1],
+                    3: products[2]
+                }).then(() => {
+                    console.log('Default products saved to Firebase');
+                }).catch((error) => {
+                    console.error('Error saving defaults:', error);
+                });
+            }
+
+            console.log('Final products:', products);
             renderAdminProducts();
         })
         .catch((error) => {
             console.error('Firebase fetch products error:', error);
-            showNotification('Unable to load products from Firebase.', 'error');
+            showNotification('Unable to load products from Firebase. Using defaults.', 'error');
+
+            // Fallback to default products
+            products = [
+                { id: 1, name: "Fresh Tomatoes", description: "Ripe, red tomatoes perfect for salads and cooking", price: 20, category: "fruit-veg", image: "🍅", imageUrl: null },
+                { id: 2, name: "Organic Spinach", description: "Fresh, leafy green spinach rich in iron", price: 30, category: "leafy", image: "🥬", imageUrl: null },
+                { id: 3, name: "Carrots", description: "Sweet and crunchy carrots, great for snacking", price: 40, category: "root", image: "🥕", imageUrl: null }
+            ];
+            renderAdminProducts();
         });
 }
 
@@ -222,9 +294,14 @@ function renderAdminProducts() {
     });
 }
 
+// Make functions globally available
 window.editProduct = function(productId) {
+    console.log('Edit product clicked:', productId);
     const product = products.find(p => p.id === productId);
-    if (!product) return;
+    if (!product) {
+        console.error('Product not found:', productId);
+        return;
+    }
 
     selectedProductId = productId;
     currentImageUrl = product.imageUrl || null;
@@ -254,9 +331,11 @@ window.editProduct = function(productId) {
 };
 
 window.deleteProduct = function(productId) {
+    console.log('Delete product clicked:', productId);
     if (!confirm('Delete this product from Firebase?')) return;
     remove(ref(db, `products/${productId}`))
         .then(() => {
+            console.log('Product deleted successfully');
             showNotification('Product deleted successfully.', 'success');
             loadAdminProducts();
         })
@@ -283,6 +362,7 @@ function openAddProductModal() {
 }
 
 function closeProductModal() {
+    console.log('Closing product modal');
     document.getElementById('productEditModal').classList.remove('active');
 }
 

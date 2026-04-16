@@ -3,13 +3,9 @@ import { getDatabase, ref, onValue, get } from "https://www.gstatic.com/firebase
 
 const firebaseConfig = {
     apiKey: "AIzaSyBtb3DLnCKrvNyZ9L7T5UJ2OxknebLUJ_8",
-    authDomain: "eco-veg-ee446.firebaseapp.com",
-    databaseURL: "https://eco-veg-ee446-default-rtdb.firebaseio.com",
-    projectId: "eco-veg-ee446",
-    storageBucket: "eco-veg-ee446.appspot.com",
-    messagingSenderId: "35768832339",
-    appId: "1:35768832339:web:150fa825f7bf2c32f551a6",
-    measurementId: "G-22L2Q5362L"
+    authDomain: "fresh-d0524.firebaseapp.com",
+    databaseURL: "https://fresh-d0524-default-rtdb.firebaseio.com",
+    projectId: "fresh-d0524"
 };
 
 const app = initializeApp(firebaseConfig);
