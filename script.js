@@ -1,3 +1,20 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getDatabase, ref, onValue, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyBtb3DLnCKrvNyZ9L7T5UJ2OxknebLUJ_8",
+    authDomain: "eco-veg-ee446.firebaseapp.com",
+    databaseURL: "https://eco-veg-ee446-default-rtdb.firebaseio.com",
+    projectId: "eco-veg-ee446",
+    storageBucket: "eco-veg-ee446.appspot.com",
+    messagingSenderId: "35768832339",
+    appId: "1:35768832339:web:150fa825f7bf2c32f551a6",
+    measurementId: "G-22L2Q5362L"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
 // Products Data - will be loaded from storage or use defaults
 let products = [];
 
@@ -69,6 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateCartCount();
     loadReviews();
     initializeEventListeners();
+    attachRealtimeFirebaseProducts();
     
     // Show sync notice for customers
     const syncNotice = document.getElementById('syncNotice');
@@ -76,6 +94,24 @@ document.addEventListener('DOMContentLoaded', () => {
         syncNotice.style.display = 'flex';
     }
 });
+
+function attachRealtimeFirebaseProducts() {
+    const productsRef = ref(db, 'products');
+    onValue(productsRef, (snapshot) => {
+        const fbProducts = snapshot.val();
+        if (fbProducts) {
+            const productsArray = Array.isArray(fbProducts)
+                ? fbProducts.filter(Boolean)
+                : Object.keys(fbProducts).map(key => ({ id: Number(key), ...fbProducts[key] }));
+            products = productsArray.sort((a, b) => a.id - b.id);
+            localStorage.setItem('products', JSON.stringify(products));
+            loadProducts();
+            showNotification('✅ Live rates updated from Firebase', 'success');
+        }
+    }, (error) => {
+        console.error('Firebase realtime error:', error);
+    });
+}
 
 // Navigation
 function initializeNavigation() {
@@ -622,13 +658,14 @@ function updateOrderStatus(order) {
 }
 
 // Utility Functions
-function showNotification(message) {
+function showNotification(message, type = 'info') {
+    const background = type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : 'var(--primary-color)';
     const notification = document.createElement('div');
     notification.style.cssText = `
         position: fixed;
         top: 100px;
         right: 20px;
-        background: var(--primary-color);
+        background: ${background};
         color: white;
         padding: 1rem 2rem;
         border-radius: 5px;
@@ -678,22 +715,26 @@ function openSyncCodeModal() {
 }
 
 function checkForProductUpdates() {
-    // Try to get latest products from localStorage
-    const savedProducts = localStorage.getItem('products');
-    if (savedProducts) {
-        try {
-            const latestProducts = JSON.parse(savedProducts);
-            if (latestProducts && latestProducts.length > 0) {
-                products = latestProducts;
+    const productsRef = ref(db, 'products');
+    get(productsRef)
+        .then((snapshot) => {
+            const fbProducts = snapshot.val();
+            if (fbProducts) {
+                const productsArray = Array.isArray(fbProducts)
+                    ? fbProducts.filter(Boolean)
+                    : Object.keys(fbProducts).map(key => ({ id: Number(key), ...fbProducts[key] }));
+                products = productsArray.sort((a, b) => a.id - b.id);
+                localStorage.setItem('products', JSON.stringify(products));
                 loadProducts();
-                showNotification('✅ Products updated to latest! Prices may have changed.', 'success');
+                showNotification('✅ Prices synced from Firebase successfully.', 'success');
+            } else {
+                showNotification('No product update found on Firebase yet.', 'info');
             }
-        } catch (e) {
-            showNotification('Error checking for updates', 'error');
-        }
-    } else {
-        showNotification('No updates available yet. Ask seller for sync code.', 'info');
-    }
+        })
+        .catch((error) => {
+            console.error('Firebase fetch error:', error);
+            showNotification('Unable to fetch updates from Firebase.', 'error');
+        });
 }
 
 function applySyncCode() {
