@@ -109,8 +109,10 @@ function setupDashboardListeners() {
     const refreshBtn = document.getElementById('refreshBtn');
     const productEditForm = document.getElementById('productEditForm');
     const cancelProductBtn = document.getElementById('cancelProductBtn');
+    const closeProductModalBtn = document.getElementById('closeProductModal');
     const productImageInput = document.getElementById('productImageInput');
     const removeImageBtn = document.getElementById('removeImageBtn');
+    const tabButtons = document.querySelectorAll('.tab-btn');
 
     if (addProductBtn) {
         addProductBtn.addEventListener('click', openAddProductModal);
@@ -128,6 +130,10 @@ function setupDashboardListeners() {
         cancelProductBtn.addEventListener('click', closeProductModal);
     }
 
+    if (closeProductModalBtn) {
+        closeProductModalBtn.addEventListener('click', closeProductModal);
+    }
+
     if (productImageInput) {
         productImageInput.addEventListener('change', handleProductImageChange);
     }
@@ -135,6 +141,30 @@ function setupDashboardListeners() {
     if (removeImageBtn) {
         removeImageBtn.addEventListener('click', removeCurrentImage);
     }
+
+    if (tabButtons.length) {
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetTab = button.dataset.tab;
+                activateTab(targetTab);
+            });
+        });
+    }
+}
+
+function activateTab(tabName) {
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabButtons.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.tab === tabName);
+    });
+
+    tabContents.forEach(content => {
+        const isActive = content.id === `${tabName}Tab`;
+        content.classList.toggle('active', isActive);
+        content.style.display = isActive ? 'block' : 'none';
+    });
 }
 
 function loadAdminProducts() {
