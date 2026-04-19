@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getDatabase, ref, set, update, remove, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import { getDatabase, ref, set, update, remove, get, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyB3783H6jL702__hpF-tnAQ6O32xR55qLg",
@@ -426,8 +426,8 @@ function handleProductFormSubmit(event) {
                 showNotification('Unable to update product.', 'error');
             });
     } else {
-        const nextId = getNextProductId();
-        set(ref(db, `products/${nextId}`), productData)
+       const newRef = push(ref(db, 'products'));
+    set(newRef, productData)
             .then(() => {
                 showNotification('Product added to Firebase.', 'success');
                 closeProductModal();
