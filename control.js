@@ -13,8 +13,8 @@ const db = getDatabase(app);
 const productsRef = ref(db, 'products');
 
 const ADMIN_CREDENTIALS = {
-    username: 'admin',
-    password: 'admin123'
+    username: 'sufedaveg',
+    password: 'sufedaveg@786'
 };
 
 let isAuthenticated = false;
