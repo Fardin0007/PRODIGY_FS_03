@@ -1,5 +1,5 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getDatabase, ref, set, update, remove, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import { initializeApp } from "https://eco-veg-ee446-default-rtdb.firebaseio.com";
+import { getDatabase, ref, set, update, remove, get } from "https://eco-veg-ee446-default-rtdb.firebaseio.com";
 
 const firebaseConfig = {
   apiKey: "AIzaSyB3783H6jL702__hpF-tnAQ6O32xR55qLg",
