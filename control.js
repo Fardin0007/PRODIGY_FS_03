@@ -2,10 +2,10 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebas
 import { getDatabase, ref, set, update, remove, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBtb3DLnCKrvNyZ9L7T5UJ2OxknebLUJ_8",
-  authDomain: "fresh-d0524.firebaseapp.com",
-  databaseURL: "https://fresh-d0524-default-rtdb.firebaseio.com",
-  projectId: "fresh-d0524"
+  apiKey: "AIzaSyB3783H6jL702__hpF-tnAQ6O32xR55qLg",
+  authDomain: "eco-veg-ee446.firebaseapp.com",
+  databaseURL: "https://eco-veg-ee446-default-rtdb.firebaseio.com",
+  projectId: "eco-veg-ee446"
 };
 
 const app = initializeApp(firebaseConfig);
