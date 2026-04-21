@@ -62,20 +62,10 @@ window.updateCustomerProducts = function(newProducts) {
 // Initialize App
 document.addEventListener('DOMContentLoaded', () => {
     // Load products from storage (may be updated by admin) or use default
-    products = loadProductsFromStorage();
+   products = []; // Firebase only
+
+    console.log('Initialized with Firebase products');
     
-    // Ensure products array is populated
-    if (!products || products.length === 0) {
-        products = loadProductsFromStorage(); // Get defaults
-    }
-    
-    // Save to localStorage if not already there (for first time)
-    if (!localStorage.getItem('products') || products.length === 0) {
-        products = loadProductsFromStorage(); // Ensure we have defaults
-        localStorage.setItem('products', JSON.stringify(products));
-    }
-    
-    console.log('Initialized with', products.length, 'products');
     
     initializeNavigation();
     loadProducts();
@@ -83,6 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadReviews();
     initializeEventListeners();
     attachRealtimeFirebaseProducts();
+});
     
     // Show sync notice for customers
     const syncNotice = document.getElementById('syncNotice');
